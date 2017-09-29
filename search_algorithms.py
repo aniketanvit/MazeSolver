@@ -73,6 +73,7 @@ class SearchAlgorithms:
     def euclidean_distance (self, a, b, c, d):
         xd = a - c
         yd = b - d
+        ## Isn't the eudlicean distance Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2)) ? 
         return (xd * xd) + (yd * yd)
 
     def dummy_heuristic (self, a, b, c, d):

@@ -9,8 +9,10 @@ class MazeSolver:
         success = self.search_algorithms.depth_first_search (maze)
         if (success):
             self.maze_state = MazeState.SOLVED
+            print("SOLVABLE")
         else:
             self.maze_state = MazeState.UNSOLVABLE
+            print("UNSOLVABLE")
 
         return self.maze_state
 

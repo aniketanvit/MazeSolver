@@ -1,4 +1,4 @@
-from tkinter import Canvas, Frame, BOTH
+from Tkinter import Canvas, Frame, BOTH
 
 from enums import CellState
 
