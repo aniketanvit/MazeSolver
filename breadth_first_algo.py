@@ -30,12 +30,12 @@ class breadFirstAlgorithm:
                 #fringe_queue.append([south,cy])
         #else:
            #pass
-        for i in range(0,4):
+        for i in range(0,4,1):
             row = cx + x[i]
             col = cy +y[i]
             if(row >= 0 && row < gx && col >= 0 && col < gy):
                 if maze[row][col] == 0:
-                    fringe_queu.append([row,col])
+                    fringe_queue.append([row,col])
 
         print(fringe_queue)
 

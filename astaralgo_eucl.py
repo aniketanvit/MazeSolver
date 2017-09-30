@@ -12,47 +12,58 @@ import math
 import heapq
 
 class astraAlgoEucl:
+
     def adjacent_cells(cx,cy, gx,gy, parent,cost_till,open):
         #possible directions
         cells = []
         cost_man = {}
         cost_euc = {}
-        east = cy + 1
-        west = cy - 1
-        north = cx - 1
-        south = cx + 1
-        if cx < gx and east < gy and cx >= 0 and east >= 0:
-            if maze[cx][east] == 0 and [cx,east] not in open:
-                parent[cx,cy] = [cx,east]
+        #east = cy + 1
+        #west = cy - 1
+        #north = cx - 1
+        #south = cx + 1
+        #if cx < gx and east < gy and cx >= 0 and east >= 0:
+            #if maze[cx][east] == 0 and [cx,east] not in open:
+                #parent[cx,cy] = [cx,east]
                 #cost_man[cx,east] = manhattan_dist(cx, east, gx, gy)
-                cost_euc[cx,east] = euclidean_dist(cx, east, gx, gy)
-                cost_till[cx, east] = cost_till[cx, cy] + 1 + cost_euc[cx,east]
-                cost1 = cost_euc[cx,east]
-                cells.append([cx,east, cost1])
-        if  cx < gx and west < gy and cx >= 0 and west >= 0:
-            if maze[cx][west] == 0 and [cx,west] not in open:
-                parent[cx,cy] = [cx,west]
+                #cost_euc[cx,east] = euclidean_dist(cx, east, gx, gy)
+                #cost_till[cx, east] = cost_till[cx, cy] + 1 + cost_euc[cx,east]
+                #cost1 = cost_euc[cx,east]
+                #cells.append([cx,east, cost1])
+        #if  cx < gx and west < gy and cx >= 0 and west >= 0:
+            #if maze[cx][west] == 0 and [cx,west] not in open:
+                #parent[cx,cy] = [cx,west]
                 #cost_man[cx,west] = manhattan_dist(cx, west, gx, gy)
-                cost_euc[cx,west] = euclidean_dist(cx, west, gx, gy)
-                cost_till[cx, west] = cost_till[cx, cy] + 1 + cost_euc[cx,west]
-                cost2 = cost_euc[cx,west]
-                cells.append([cx,west,cost2])
-        if  north < gx and cy < gy and north >= 0 and cy >=0:
-            if maze[north][cy] == 0 and [north,cy] not in open:
-                parent[cx,cy] = [north, cy]
+                #cost_euc[cx,west] = euclidean_dist(cx, west, gx, gy)
+                #cost_till[cx, west] = cost_till[cx, cy] + 1 + cost_euc[cx,west]
+                #cost2 = cost_euc[cx,west]
+                #cells.append([cx,west,cost2])
+        #if  north < gx and cy < gy and north >= 0 and cy >=0:
+            #if maze[north][cy] == 0 and [north,cy] not in open:
+                #parent[cx,cy] = [north, cy]
                 #cost_man[north,cy] = manhattan_dist(north, cy, gx, gy)
-                cost_euc[north,cy] = euclidean_dist(north, cy, gx, gy)
-                cost_till[north, cy] = cost_till[cx, cy] + 1 + cost_euc[north,cy]
-                cost3 = cost_euc[north,cy]
-                cells.append([north,cy,cost3])
-        if  south < gx and cy < gy and south >= 0 and cy >= 0:
-            if maze[south][cy] == 0 and [south, cy] not in open:
-                parent[south,cy] = [south, cy]
+                #cost_euc[north,cy] = euclidean_dist(north, cy, gx, gy)
+                #cost_till[north, cy] = cost_till[cx, cy] + 1 + cost_euc[north,cy]
+                #cost3 = cost_euc[north,cy]
+                #cells.append([north,cy,cost3])
+        #if  south < gx and cy < gy and south >= 0 and cy >= 0:
+            #if maze[south][cy] == 0 and [south, cy] not in open:
+                #parent[south,cy] = [south, cy]
                 #cost_man[south,cy] = manhattan_dist(south, cy, gx, gy)
-                cost_euc[south,cy] = euclidean_dist(south, cy, gx, gy)
-                cost_till[south, cy] = cost_till[cx, cy] + 1 + cost_euc[south,cy]
-                cost4 = cost_euc[south,cy]
-                cells.append([south,cy,cost4])
+                #cost_euc[south,cy] = euclidean_dist(south, cy, gx, gy)
+                #cost_till[south, cy] = cost_till[cx, cy] + 1 + cost_euc[south,cy]
+                #cost4 = cost_euc[south,cy]
+                #cells.append([south,cy,cost4])
+        for i in range(0,4,1):
+            row = cx + x[i]
+            col = cy +y[i]
+            if(row >= 0 && row < gx && col >= 0 && col < gy):
+                if maze[row][col] == 0 and [row,col] not in open:
+                    parent[cx,cy] = [row,col]
+                    cost_euc[row,col] = euclidean_dist(row, col, gx, cy)
+                    cost_till[row,col] = cost_till[cx, cy] + 1 + cost_man[row,col]
+                    cost1 = cost_man[row,col]
+                    cells.append([row,col, cost1])
     """
     Sorting based on the Euclidean distance from the neighbours to the goal
     """
