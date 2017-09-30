@@ -8,18 +8,17 @@ import time
 
 def main ():
     PROBABILITY = 0.20
-    MAZESIZE = 20
-
+    MAZESIZE = 4500
     root = Tk ()
     grid = MazeUI (root)
     generator = MazeGenerator ()
     maze = generator.getNewMaze (MAZESIZE, MAZESIZE, PROBABILITY)
-    start_time = time.time()
     solver = MazeSolver (SearchAlgorithms (maze))
-    result = solver.solve_with_bfs (maze)
-    print("Runtime: %s seconds" % ((time.time() - start_time)*1000))
-    print (maze)
-    grid.paint_maze (maze)
+    start_time = time.time()
+    result = solver.solve_with_dfs (maze)
+    print("Runtime: %s seconds" % ((time.time() - start_time)))
+    #print (maze)
+    #grid.paint_maze (maze)
     root.mainloop ()
 
 if __name__ == '__main__':
