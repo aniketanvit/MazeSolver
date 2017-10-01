@@ -54,7 +54,7 @@ class aStarAlgorMan:
         for i in range(0,4,1):
             row = cx + x[i]
             col = cy +y[i]
-            if(row >= 0 && row < gx && col >= 0 && col < gy):
+            if(row >= 0 and row < gx and col >= 0 and col < gy):
                 if maze[row][col] == 0 and [row,col] not in open:
                     parent[cx,cy] = [row,col]
                     cost_man[row,col] = manhattan_dist(row, col, gx, cy)

@@ -33,7 +33,7 @@ class depthFirstAlgo:
         for i in range(0,4,1):
             row = cx + x[i]
             col = cy +y[i]
-            if(row >= 0 && row < gx && col >= 0 && col < gy):
+            if(row >= 0 and row < gx and col >= 0 and col < gy):
                 if maze[row][col] == 0:
                     fringe_queue.append([row,col])
 
@@ -45,6 +45,7 @@ class depthFirstAlgo:
         path = []
         fringe_stack = []
         fringe_stack.append([sx,sy])
+        parent = []
         print(fringe_stack)
         while fringe_stack:
             current_state = fringe_stack.pop()
