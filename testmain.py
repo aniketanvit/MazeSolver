@@ -5,15 +5,16 @@ from maze_generator import MazeGenerator
 from maze_solver import MazeSolver
 from search_algorithms import SearchAlgorithms
 import time
-from depthFirstAlgo import depth_first_algo
+from simulate_annealiong import simulateAnnealing
+from random import randint
 
 ### Generate 2dMaze where 3 is blocked and 2 is not blocked
 def generate2DMaze(MAZESIZE, PROBABILITY):
 	maze = []
-	for i in range(0,MAZESIZE-1,1):
+	for i in range(0,MAZESIZE,1):
 		inner = []
-		for j in range(0,MAZESIZE-1,1):
-			prob = random(0,1)
+		for j in range(0,MAZESIZE,1):
+			prob = randint(0,1)
 			if(prob< PROBABILITY):
 				inner.append(3)
 			else:
@@ -25,10 +26,21 @@ def generate2DMaze(MAZESIZE, PROBABILITY):
 	maze[MAZESIZE-1][MAZESIZE-1] = 5
 	return maze
 
+## Print a clear version of maze
+def printMaze(maze):
+	for i in range(0, len(maze),1):
+		for j in range(0,len(maze),1):
+			print maze[i][j]
+		print
+
 def main ():
 	PROBABILITY = 0.20
 	MAZESIZE = 20
 	maze = generate2DMaze(MAZESIZE,PROBABILITY)
-	search = simulateAnnealing()
-	hardMaze = search.searchHardestMaze(maze, 0,0, MAZESIZE-1,MAZESIZE-1, PROBABILITY)
-	print hardMaze
+	search = simulateAnnealing ()
+	dim = MAZESIZE-1
+	hardMaze = search.simulate_annealing_hard_maze(maze,0,0,dim,dim,PROBABILITY)
+	printMaze(hardMaze)
+
+if __name__ == '__main__':
+	main ()
