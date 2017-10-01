@@ -69,7 +69,7 @@ class simulateAnnealing:
     			new_path = search_algo_dfs(maze, sx, sy, gx, gy)
     			if(new_path == -1):
     				print "UNSOLVABLE"
-    				break;
+    				break; ## if unsolvable need to ignore and continue searching for only mazes with solutions
     			new_cost = len(new_path)
     			if(new_cost < old_cost):
     				best = path;
