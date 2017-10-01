@@ -13,6 +13,23 @@ class simulateAnnealing:
     path = []
     fringe_stack = []
 
+    def generate2DMaze(MAZESIZE, PROBABILITY):
+	maze = []
+	for i in range(0,MAZESIZE-1,1):
+		inner = []
+		for j in range(0,MAZESIZE-1,1):
+			prob = random(0,1)
+			if(prob< PROBABILITY):
+				inner.append(3)
+			else:
+				inner.append(2)
+		maze.append(inner)
+	## Start
+	maze[0][0] == 1
+	## Goal
+	maze[MAZESIZE-1][MAZESIZE-1] = 5
+	return maze
+
     def directions(cx,cy, gx,gy, fringe_stack):
     	## this isn't nessacarily random, figure out how to make it random 
     	for i in range(0,4,1):
@@ -65,10 +82,18 @@ class simulateAnnealing:
 					 	old_cost = new_cost
 				i+=1
 				# t needs to change for the accpet_prob to go down
-		return best, old_cost
+		return best, old_cost, maze
 
-	def searchHardestPath(maze, sx,sy, gx,gy):
-		best, new_cost = simulate_annealing(maze, sx,sy, gx,gy)
-		## still working on this
+	def searchHardestMaze(maze, sx,sy, gx,gy, prob):
+		old_best, old_cost, old_maze = simulate_annealing(maze, sx,sy, gx,gy)
+		## while loop old_cost < new_cost or untill making anymore mazes wont make a difference
+		while True: ## needs changing
+			hardestMaze = old_maze
+			prob += 0.01
+			new_maze = generate2DMaze(maze, prob)
+			new_best, new_cost, new_hard_maze = simulate_annealing(new_maze, sx,sy, gx,gy)
+			if(new_cost > old_cost):
+				hardestMaze = new_hard_maze
+
 		return hardestMaze
 

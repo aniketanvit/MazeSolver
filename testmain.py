@@ -30,5 +30,5 @@ def main ():
 	MAZESIZE = 20
 	maze = generate2DMaze(MAZESIZE,PROBABILITY)
 	search = simulateAnnealing()
-	hardMaze = search.searchHardestPath(maze, 0,0, MAZESIZE-1,MAZESIZE-1)
+	hardMaze = search.searchHardestMaze(maze, 0,0, MAZESIZE-1,MAZESIZE-1, PROBABILITY)
 	print hardMaze
