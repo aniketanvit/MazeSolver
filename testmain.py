@@ -29,6 +29,6 @@ def main ():
 	PROBABILITY = 0.20
 	MAZESIZE = 20
 	maze = generate2DMaze(MAZESIZE,PROBABILITY)
-	search = breadFirstAlgorithm()
-	path = search.search_algo_dfs(maze, 0,0, MAZESIZE-1,MAZESIZE-1)
-
+	search = simulateAnnealing()
+	hardMaze = search.searchHardestPath(maze, 0,0, MAZESIZE-1,MAZESIZE-1)
+	print hardMaze
