@@ -1,94 +1,130 @@
-from random import randint
+############
+## Author: Luisa McKenna
+## copyright: McKenna <2017>
+## 10/02/2017
+## CS520 Assignment 1
+############
+
+import random
 import math
 x = [0,0,1,-1]
 y = [1,-1,0,0]
 
-best = []
 accept_prob = 0
 path = []
 fringe_queue = []
 
+# printMaze  prints a simplified version of the maze
+#
+# param maze
 def printMaze(maze):
-	for i in range(0, len(maze)-1):
-		for j in range(0,len(maze)-1):
-			print maze[i][j],
+	for row in maze:
+		for j in row:
+			print j,
 		print
 
+# Generate2DMaze  generates a 2d list
+#
+# S - Start
+# G - Goal
+# F - Full
+# 0 - Empty
+
+# param  MAZESIZE, PROBABILITY
+# return  maze
 def generate2DMaze(MAZESIZE, PROBABILITY):
 	maze = []
+	prob = PROBABILITY*100
 	for i in range(0,MAZESIZE,1):
 		inner = []
 		for j in range(0,MAZESIZE,1):
-			prob = randint(0,1)
-			if(prob< PROBABILITY):
-				inner.append(3)
+			if (i == 0 and j == 0):
+				inner.append("S")
+			elif(i == MAZESIZE-1 and j == MAZESIZE-1):
+				inner.append("G")
 			else:
-				inner.append(2)
+				rand = random.randint (1, 100)
+				if(rand < prob):
+					inner.append("F")
+				else:
+					inner.append("0")
 		maze.append(inner)
-	## Start
-	maze[0][0] == 1
-	## Goal
-	maze[MAZESIZE-1][MAZESIZE-1] = 5
+
 	return maze
 
-def directions(maze,cx,cy, gx,gy, fringe_queue): 
+# directions  finds all possible directions a cell has and adds to fringe
+#
+# param  maze, intial x, intial y, goal x, goal y, and fringe
+#def directions(maze,cx,cy, gx,gy, fringe_queue, nodes):
+def directions(maze,cx,cy, gx,gy, fringe_queue):
 	for i in range(0,4,1):
 		row = cx + x[i]
-		col = cy +y[i]
-		if(row >= 0 and row < gx and col >= 0 and col < gy):
-			if maze[row][col] == 0:
-				fringe_queue.append([row,col])
+		col = cy + y[i]
+		if(row >= 0 and row <= gx and col >= 0 and col <= gy and (maze[row][col] == "0" or maze[row][col] == "G")):
+			if (cx == 0 and cy == 0):
+				maze[row][col] = "1"
+			else:
+				maze[row][col] = str(1 + int(maze[cx][cy]))
+			fringe_queue.append([row,col])
+			#nodes += 1;
 
-       #print(fringe_queue)
-
+# Breadth  first search to find the most optimal path
+#
+# param  maze, intial x, intial y, goal x, goal y
+# return  minmial path if exists or -1 if it doesn't
 def search_algo_bfs(maze, sx,sy, gx,gy):
-	start = maze[sx][sy]
+	#nodes_expanded = 0
 	path[:] = []
 	fringe_queue[:] = []
 	fringe_queue.append([sx,sy])
-	#print(fringe_queue)
 	while fringe_queue:
 		current_state = fringe_queue.pop(0)
-		maze[current_state[0]][current_state[1]] = 5
-		#print(current_state)
 		cx = current_state[0]
 		cy = current_state[1]
-		if cx == gx and cy == gy :
-			print("Reached Goal")
-			path.append(current_state)
-			return len(path)
+		#node_expanded = directions(maze,cx,cy,gx,gy,fringe_queue,nodes_expanded)
 		directions(maze,cx,cy,gx,gy,fringe_queue)
+		if len(fringe_queue) != 0:
+			peek = fringe_queue[0]
+			peekx = peek[0]
+			peeky = peek[1]
+			if(peekx == gx and peeky == gy):
+				#return 1 + int(maze[cx][cy])
+				return nodes_expanded + 1
 		path.append(current_state)
-		#print(fringe_queue)
 	return -1
 
+# simulateAnnealing  defines the simulateAnnealing algorithm
+# to find the hardest maze
 class simulateAnnealing:
-	# Possible directions in an array
+
+	# Simulate annealing  finds hardest path
+	#
+	# param  maze, intial x, intial y, goal x, goal y, probability cell is full
+	# return  hard_maze if exists or -1 if it doesn't
 	def simulate_annealing_hard_maze(self,maze,sx,sy,gx,gy,prob):
 		current_Maze = maze
 		current_performance = search_algo_bfs(maze, sx,sy, gx,gy)
-		printMaze(current_Maze) ## for testing determing if it really does get better
 		if current_performance == -1:
-			print "UNSOLVABLE.. start with a map that is SOLVABLE"
-			return
+			return -1
 		alpha = 0.9
-		T_MAX = 50
+		T_MAX = 40
 		TIME = 1
-		## start loop
 		while(TIME < T_MAX):
-			prob += 0.01 ## change maze slightly
-			new_maze = generate2DMaze(20, prob)# generate new maze
-			new_performance = search_algo_dfs(new_maze, sx,sy, gx,gy)
-			if(new_performance != -1): ## ignore maze's without solutions
+			prob += 0.01
+			new_maze = generate2DMaze(10, prob)
+			new_performance = search_algo_bfs(new_maze, sx,sy, gx,gy)
+			if(new_performance != -1):
 				if(new_performance > current_performance):
 					current_Maze = new_maze
+					current_performance = new_performance
 				else:
-					prob = random(0,1)
+					randProb = random.randint (1,100)
 					DELTA = current_performance - new_performance
 					TEMP = T_MAX - TIME
-					accept_prob = math.e**(-alpha*(float(DELTA)/TEMP))
-					if(prob < accept_prob):
+					accept_prob = (math.e**(-alpha*(float(DELTA)/TEMP)))*100
+					if(randProb < accept_prob):
 						current_Maze = new_maze
+						current_performance = new_performance
 				TIME += 1
 			else:
 				prob -=0.01
